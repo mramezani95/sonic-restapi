@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"strconv"
 )
 
 func CommonNameMatch(r *http.Request) bool {
@@ -44,7 +45,7 @@ func CommonNameMatch(r *http.Request) bool {
 
 	commonNames := make([]string, 0)
 	for _, peercert := range r.TLS.PeerCertificates {
-		commonNames = append(commonNames, peercert.Subject.CommonName)
+		commonNames = append(commonNames, strconv.Quote(peercert.Subject.CommonName))
 	}
 	log.Printf("error: Authentication Failed! None of the common names in the client cert chain" +
 			   " matched any of the trusted common names. Client cert common names: %v", commonNames)
